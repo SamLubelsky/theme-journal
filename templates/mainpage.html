@@ -1,0 +1,15 @@
+{% extends "base_generic.html" %}
+{% load static %}
+<!doctype html>
+<html>
+  <head>
+    <title>Getting Started with Django and Webpack</title>
+  </head>
+  <body>
+    {% block content%}
+    <div id="root" ></div>
+    {{ tasks|json_script:'tasks' }}
+    <script src="{% static 'index-bundle.js' %}"></script>
+    {% endblock %}
+  </body>
+</html>
