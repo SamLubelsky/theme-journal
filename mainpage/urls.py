@@ -20,6 +20,41 @@ from django.views.generic import TemplateView, RedirectView
 from django.conf import settings
 from django.conf.urls.static import static
 from . import views
+from .models import Task, TaskList
+from rest_framework import routers, serializers, viewsets
+
+class TaskSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Task
+        fields = ['name','taskList']
+
+class TaskListSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = TaskList
+        fields = ['name']
+
+# class TaskListViewSet(viewsets.ModelViewSet):
+#     def get_queryset(self):
+#         return TaskList.objects.all().filter(owner__exact=self.request.user)
+class TaskViewSet(viewsets.ModelViewSet):
+    # def get_queryset(self):
+    #     taskLists = TaskList.objects.filter(owner=self.request.user)
+    #     tasks = taskLists[0].task_set.all()
+    #     return tasks
+    def get_queryset(self):
+        taskLists = TaskList.objects.all().filter(owner__exact=self.request.user)
+        # tasks = []
+        # for taskList in taskLists:
+        #     tasks += taskList.task_set.all()
+        # return tasks
+        print(taskLists[0])
+        return taskLists[0].task_set.all()
+    serializer_class=TaskSerializer
+
+router = routers.DefaultRouter()
+router.register(r'tasks', TaskViewSet)
+#router.register(r'taskList',TaskListViewSet)
 urlpatterns = [ 
-    path('', views.MainPageView.as_view())
+    path('', views.MainPageView.as_view()),
+    path('add/', include(router.urls), basename="Add")
 ]

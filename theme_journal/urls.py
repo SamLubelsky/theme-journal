@@ -14,15 +14,36 @@ Including another URLconf
     1. Import the include() function: from django.urls import include, path
     2. Add a URL to urlpatterns:  path('blog/', include('blog.urls'))
 """
+import sys
+sys.path.append(".")
 from django.contrib import admin
 from django.urls import path, include
 from django.views.generic import TemplateView, RedirectView
 from django.conf import settings
 from django.conf.urls.static import static
+from django.contrib.auth.models import User
+from rest_framework import routers, serializers, viewsets
+
+
+class UserSerializer(serializers.HyperlinkedModelSerializer):
+    class Meta:
+        model = User    
+        fields = ['url', 'username', 'email','is_staff']
+
+class UserViewSet(viewsets.ModelViewSet):
+    queryset = User.objects.all()
+    serializer_class = UserSerializer
+
+
+router = routers.DefaultRouter()
+router.register(r'users', UserViewSet)
+
 urlpatterns = [
     path('admin/', admin.site.urls),
     path('', RedirectView.as_view(url='mainpage/', permanent=True), name='index'),
+    path('users/', include(router.urls)),
     path('mainpage/', include('mainpage.urls')),
     path('accounts/', include('django.contrib.auth.urls')),
     path('hello-webpack/', TemplateView.as_view(template_name='hello_webpack.html')),
+    path('api-auth/', include('rest_framework.urls', namespace='rest_framework'))
 ] + static(settings.STATIC_URL, document_root=settings.STATIC_ROOT)

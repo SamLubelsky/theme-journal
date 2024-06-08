@@ -15,8 +15,11 @@ class MainPageView(LoginRequiredMixin, TemplateView):
 
     def get_context_data(self, **kwargs):
         #return {}
-        taskList = TaskList.objects.filter(owner=self.request.user)[0]
-        tasks = taskList.tasklistitem_set.all()
         context = super().get_context_data(**kwargs)
+        taskLists = TaskList.objects.filter(owner=self.request.user)
+        if not(taskLists):
+            context['tasks'] = []
+            return context
+        tasks = taskLists[0].task_set.all()
         context['tasks'] = [{'name': task.name, 'completed': task.completed, 'id': f'todo-{task.id}'} for task in tasks]
         return context
