@@ -19,7 +19,7 @@ class TaskList(models.Model):
     owner = models.ForeignKey(User, on_delete=models.CASCADE)
 
     def __str__(self):
-        return self.name
+        return f'{self.name} - {self.owner}'
     
     def get_absolute_url(self):
         return reverse('taskList-detail-view', args=[str(self.id)])

@@ -52,9 +52,9 @@ class TaskViewSet(viewsets.ModelViewSet):
     serializer_class=TaskSerializer
 
 router = routers.DefaultRouter()
-router.register(r'tasks', TaskViewSet)
+router.register(r'tasks', TaskViewSet, basename="tasks")
 #router.register(r'taskList',TaskListViewSet)
 urlpatterns = [ 
     path('', views.MainPageView.as_view()),
-    path('add/', include(router.urls), basename="Add")
+    path('add/', include(router.urls))
 ]
