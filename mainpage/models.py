@@ -23,3 +23,14 @@ class TaskList(models.Model):
     
     def get_absolute_url(self):
         return reverse('taskList-detail-view', args=[str(self.id)])
+
+class Goal(models.Model):
+    name = models.CharField(max_length = 200)
+    owner = models.ForeignKey(User, on_delete=models.CASCADE)
+    archived = models.BooleanField(default=False)
+
+    def __str__(self):
+        return f'{self.name} - {self.owner}'
+    
+    def get_absolute_url(self):
+        return reverse('goal-detail-view', args=[str(self.id)])

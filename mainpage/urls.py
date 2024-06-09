@@ -20,8 +20,10 @@ from django.views.generic import TemplateView, RedirectView
 from django.conf import settings
 from django.conf.urls.static import static
 from . import views
-from .models import Task, TaskList
-from rest_framework import routers, serializers, viewsets
+from .models import Task, TaskList, Goal
+from rest_framework import routers, serializers, viewsets, generics
+from rest_framework.permissions import IsAuthenticated
+from django.contrib.auth.models import User
 
 class TaskSerializer(serializers.ModelSerializer):
     class Meta:
@@ -36,25 +38,41 @@ class TaskListSerializer(serializers.ModelSerializer):
 # class TaskListViewSet(viewsets.ModelViewSet):
 #     def get_queryset(self):
 #         return TaskList.objects.all().filter(owner__exact=self.request.user)
-class TaskViewSet(viewsets.ModelViewSet):
-    # def get_queryset(self):
-    #     taskLists = TaskList.objects.filter(owner=self.request.user)
-    #     tasks = taskLists[0].task_set.all()
-    #     return tasks
-    def get_queryset(self):
-        taskLists = TaskList.objects.all().filter(owner__exact=self.request.user)
-        # tasks = []
-        # for taskList in taskLists:
-        #     tasks += taskList.task_set.all()
-        # return tasks
-        print(taskLists[0])
-        return taskLists[0].task_set.all()
-    serializer_class=TaskSerializer
+# class TaskViewSet(viewsets.ModelViewSet):
+#     # def get_queryset(self):
+#     #     taskLists = TaskList.objects.filter(owner=self.request.user)
+#     #     tasks = taskLists[0].task_set.all()
+#     #     return tasks
+#     queryset = TaskList.objects.all()
+#     def get_queryset(self):
+#         qs = super().get_queryset()
+#         taskLists = TaskList.objects.all().filter(owner__exact=self.request.user).map(lambda x: qs.union(x))
+#         # for taskList in taskLists:
+#         #     qs.union(taskList.task_set.all())
+#         return qs
+#     serializer_class=TaskSerializer
+
+
+
+# class GoalViewSet(viewsets.ModelViewSet):
+#     serializer_class=GoalSerializer
+#     def get_queryset(self):
+#         return Goal.objects.filter(owner__exact=self.request.user)
+#     def perform_create(self, serializer):
+#         serializer.save(owner=self.request.user)
+#     permission_classes=[IsAuthenticated]
+
 
 router = routers.DefaultRouter()
-router.register(r'tasks', TaskViewSet, basename="tasks")
+#router.register(r'goals', GoalViewSet, basename="tasks")
 #router.register(r'taskList',TaskListViewSet)
 urlpatterns = [ 
     path('', views.MainPageView.as_view()),
-    path('add/', include(router.urls))
+    #path('add/', include(router.urls)),
+    path('goals/', views.GoalList.as_view(), name='goal-list'),
+    path('goal/<int:pk>', views.GoalDetail.as_view(), name='goal-detail'),
+    path('users/', views.UserList.as_view(), name='user-list'),
+    path('user/<int:pk>', views.UserDetail.as_view(), name='user-detail'),
+    path('', views.api_root)
+
 ]
