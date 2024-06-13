@@ -3,7 +3,7 @@
   "version": "1.0.0",
   "main": "index.js",
   "scripts": {
-    "dev": "webpack --mode development --watch",
+    "dev": "rm -f static/index-bundle.js && webpack --mode development --watch",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "keywords": [],
@@ -21,6 +21,7 @@
     "webpack-cli": "^5.1.4"
   },
   "dependencies": {
+    "js-cookie": "^3.0.5",
     "nanoid": "^5.0.7",
     "react": "^18.3.1",
     "react-dom": "^18.3.1"

@@ -8,7 +8,7 @@ function Todo(props){
   }
   function handleSubmit(e){
     e.preventDefault();
-    props.editTask(props.id, newName);
+    props.editGoal(props.id, newName);
     setNewName("");
     setEditing(false);
   }
@@ -47,7 +47,7 @@ function Todo(props){
           id={props.id}
           type="checkbox"
           defaultChecked={props.completed}
-          onChange={() => props.toggleTaskCompleted(props.id)}
+          onChange={() => props.toggleGoalCompleted(props.id)}
         />
         <label className="todo-label" htmlFor={props.id}>
           {props.name}
@@ -60,7 +60,7 @@ function Todo(props){
         <button
           type="button"
           className="btn btn__danger"
-          onClick={() => props.deleteTask(props.id)}>
+          onClick={() => props.deleteGoal(props.id)}>
           Delete <span className="visually-hidden">{props.name}</span>
         </button>
       </div>

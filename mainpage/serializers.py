@@ -3,7 +3,7 @@ from django.contrib.auth.models import User
 from .models import Goal
 
 class UserSerializer(serializers.HyperlinkedModelSerializer):
-    goals = serializers.HyperlinkedRelatedField(many=True, queryset=Goal.objects.all())
+    goals = serializers.HyperlinkedRelatedField(view_name='goal-detail',many=True, queryset=Goal.objects.all())
 
     class Meta:
         model = User

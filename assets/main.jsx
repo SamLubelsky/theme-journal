@@ -8,9 +8,9 @@ import {useId} from 'react'
 //   {id: "todo-1", name:"Sleep", completed:false},
 //   {id: "todo-2", name:"Repeat", completed:false},
 // ]
-const DATA = JSON.parse(document.getElementById('tasks').textContent)
+const DATA = JSON.parse(document.getElementById('goals').textContent)
 ReactDOM.createRoot(document.getElementById('root')).render(
   <React.StrictMode>
-    <App tasks={DATA}/>
+    <App goals={DATA}/>
   </React.StrictMode>,
 )

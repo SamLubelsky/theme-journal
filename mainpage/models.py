@@ -26,7 +26,7 @@ class TaskList(models.Model):
 
 class Goal(models.Model):
     name = models.CharField(max_length = 200)
-    owner = models.ForeignKey(User, on_delete=models.CASCADE)
+    owner = models.ForeignKey(User, related_name='goals',on_delete=models.CASCADE)
     archived = models.BooleanField(default=False)
 
     def __str__(self):

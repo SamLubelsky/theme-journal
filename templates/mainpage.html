@@ -8,7 +8,7 @@
   <body>
     {% block content%}
     <div id="root" ></div>
-    {{ tasks|json_script:'tasks' }}
+    {{ goals|json_script:'goals' }}
     <script src="{% static 'index-bundle.js' %}"></script>
     {% endblock %}
   </body>

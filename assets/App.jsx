@@ -4,53 +4,87 @@ import FilterButton from "./components/FilterButton.jsx";
 import {useState} from "react";
 import {nanoid} from "nanoid";
 import React from "react";
+import Cookies from 'js-cookie'
 const FILTER_MAP = {
+  Current: (goal) => !goal.archived,
   All: () => true,
-  Active: (task) => !task.completed,
-  Completed: (task) => task.completed,
+  Archived: (goal) => goal.archived,
 };
+const currentLocation = window.location.host;
 const FILTER_NAMES = Object.keys(FILTER_MAP);
 function App(props) {
-  const [tasks, setTasks] = useState(props.tasks);
-  const [filter, setFilter] = useState("All");
-
-  function toggleTaskCompleted(id){
-    const updatedTasks = tasks.map((task)=>{
-      if(id == task.id){
-        return {...task, completed: !task.completed};
+  const [goals, setGoals] = useState(props.goals);
+  const [filter, setFilter] = useState("Current");
+  const csrftoken = Cookies.get('csrftoken');
+  function toggleGoalArchived(id){
+    let newStatus;
+    const updatedGoals = goals.map((goal)=>{
+      if(id == goal.id){
+        newStatus = !goal.archived;
+        return {...goal, archived: !goal.archived};
       }
-      return task;
+      return goal;
     });
-    setTasks(updatedTasks);
+    setGoals(updatedGoals);
+    fetch(`/mainpage/goals/${id}/`,{
+      method: "PATCH",
+      body:`{"archived":${newStatus}}`,
+      headers: {'X-CSRFToken': csrftoken,
+        'Content-Type':'application/json'
+      },
+      credentials: "include",
+    });
   }
-  function deleteTask(id){
-    const remainingTasks = tasks.filter((task)=> id != task.id);
-    setTasks(remainingTasks);
+  function deleteGoal(id){
+    const remainingGoals = goals.filter((goal)=> id != goal.id);
+    setGoals(remainingGoals);
+    fetch(`/mainpage/goals/${id}/`,{
+      method: "DELETE",
+      headers: {'X-CSRFToken': csrftoken,
+        'Content-Type':'application/json'
+      },
+      credentials: "include",
+    });
   }
-  function editTask(id, newName){
-    const updatedTasks = tasks.map((task) =>{
-      if(id === task.id){
-        return {...task, name : newName};
+  function editGoal(id, newName){
+    const updatedGoals = goals.map((goal) =>{
+      if(id === goal.id){
+        return {...goal, name : newName};
       }
-      return task;
+      return goal;
     });
-    setTasks(updatedTasks);
+    setGoals(updatedGoals);
+    fetch(`/mainpage/goals/${id}/`,{
+      method: "PATCH",
+      body:`{"name":"${newName}"}`,
+      headers: {'X-CSRFToken': csrftoken,
+        'Content-Type':'application/json'
+      },
+      credentials: "include",
+    });
   }
-  function addTask(name){
-    const newTask = {id: `todo-${nanoid()}`, name, completed: false}
-    setTasks([...tasks, newTask]);
+  function addGoal(name){
+    const newGoal = {id: `${nanoid()}`, name, archived: false}
+    setGoals([...goals, newGoal]);
+    fetch(`/mainpage/goals/`,{
+      method: "POST",
+      body:`{"id":"${newGoal.id}", "name":"${name}", "archived":"FALSE"}`,
+      headers: {'X-CSRFToken': csrftoken,
+        'Content-Type':'application/json'
+      },
+      credentials: "include",
+    });
   }
-
-  const taskList = tasks.filter(FILTER_MAP[filter])
-  .map((task) => (
+  const goalList = goals.filter(FILTER_MAP[filter])
+  .map((goal) => (
     <Todo 
-    id={task.id} 
-    name = {task.name} 
-    completed={task.completed}
-    key = {task.id}
-    toggleTaskCompleted={toggleTaskCompleted}
-    deleteTask={deleteTask}
-    editTask={editTask}
+    id={goal.id} 
+    name = {goal.name} 
+    completed={goal.archived}
+    key = {goal.id}
+    toggleGoalCompleted={toggleGoalArchived}
+    deleteGoal={deleteGoal}
+    editGoal={editGoal}
     />
   ));
   const filterList = FILTER_NAMES.map((name) => (
@@ -60,13 +94,13 @@ function App(props) {
     isPressed={name === filter}
     setFilter={setFilter} />
   ));
-  const tasksNoun = taskList.length !== 1 ? "tasks" : "task";
-  const headingText = `${taskList.length} ${tasksNoun} remaining`
+  const goalsNoun = goalList.length !== 1 ? "goals" : "goal";
+  const headingText = `${goalList.length} ${goalsNoun} remaining`
 
   return (
     <div className="todoapp stack-large">
       <h1>TodoMatic</h1>
-      <Form addTask={addTask}/>
+      <Form addGoal={addGoal}/>
       <div className="filters btn-group stack-exception">
         {filterList}
       </div>
@@ -75,7 +109,7 @@ function App(props) {
         role="list"
         className="todo-list stack-large stack-exception"
         aria-labelledby="list-heading">
-          {taskList}
+          {goalList}
       </ul>
     </div>
   );
