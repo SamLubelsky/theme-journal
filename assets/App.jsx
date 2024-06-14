@@ -1,4 +1,4 @@
-import Todo from "./components/Todo.jsx";
+import Todo from "./components/Goal.jsx";
 import Form from "./components/Form.jsx";
 import FilterButton from "./components/FilterButton.jsx";
 import Sidebar from "./components/Sidebar.jsx"
@@ -7,13 +7,15 @@ import {nanoid} from "nanoid";
 import React from "react";
 import Cookies from 'js-cookie'
 import {BrowserRouter as Router, Routes, Route} from 'react-router-dom'
-import Home from "./pages/Home.jsx"
+import Goals from "./pages/Goals.jsx"
+import Theme from "./pages/Theme.jsx"
 function App(props) {
   return (
     <Router>
       <Sidebar/>
       <Routes>
-        <Route path='/home' element={<Home goals={props.goals}/>}/>
+        <Route path='/goals' element={<Goals goals={props.goals}/>}/>
+        <Route path='/theme' element={<Theme theme={props.theme}/>}/>
       </Routes>
     </Router>
   );

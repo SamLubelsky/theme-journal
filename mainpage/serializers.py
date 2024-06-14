@@ -1,6 +1,6 @@
 from rest_framework import serializers
 from django.contrib.auth.models import User
-from .models import Goal
+from .models import Goal, Theme
 
 class UserSerializer(serializers.HyperlinkedModelSerializer):
     goals = serializers.HyperlinkedRelatedField(view_name='goal-detail',many=True, queryset=Goal.objects.all())
@@ -14,3 +14,9 @@ class GoalSerializer(serializers.HyperlinkedModelSerializer):
     class Meta:
         model = Goal
         fields = ['id','name','owner','archived']
+
+class ThemeSerializer(serializers.HyperlinkedModelSerializer):
+    owner = serializers.ReadOnlyField(source='owner.username')
+    class Meta:
+        model = Theme
+        fields = ['name','owner']

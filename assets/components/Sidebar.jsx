@@ -15,19 +15,19 @@ function Sidebar(props){
             <SideNav.Toggle />
             <SideNav.Nav defaultSelected="home">
                 <NavItem eventKey="home">
-                    <NavIcon><i class="fa-solid fa-house" style={{fontSize: "1.5em"}}/></NavIcon>
+                    <NavIcon><i className="fa-solid fa-house" style={{fontSize: "1.5em"}}/></NavIcon>
                     <NavText>Home</NavText>
                 </NavItem>
                 <NavItem eventKey="theme">
-                    <NavIcon><i class="fa-solid fa-lightbulb" style={{fontSize: "1.5em"}}/></NavIcon>
+                    <NavIcon><i className="fa-solid fa-lightbulb" style={{fontSize: "1.5em"}}/></NavIcon>
                     <NavText>Theme</NavText>
                 </NavItem>
                 <NavItem eventKey="goals">
-                    <NavIcon><i class="fa-solid fa-list-check"style={{fontSize: "1.5em"}}/></NavIcon>
+                    <NavIcon><i className="fa-solid fa-list-check"style={{fontSize: "1.5em"}}/></NavIcon>
                     <NavText>Goals</NavText>
                 </NavItem>
                 <NavItem eventKey="settings">
-                    <NavIcon><i class="fa-solid fa-gear"style={{fontSize: "1.5em"}}/></NavIcon>
+                    <NavIcon><i className="fa-solid fa-gear"style={{fontSize: "1.5em"}}/></NavIcon>
                     <NavText>Settings</NavText>
                 </NavItem>
             </SideNav.Nav>

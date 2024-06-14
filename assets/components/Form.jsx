@@ -8,7 +8,7 @@ function Form(props){
   function handleSubmit(event){
     event.preventDefault();
     if(name){
-      props.addGoal(name)
+      props.addItem(name)
     }
     setName("");
   }
@@ -16,7 +16,7 @@ function Form(props){
         <form onSubmit={handleSubmit}>
         <h2 className="label-wrapper">
           <label htmlFor="new-todo-input" className="label__lg">
-            What needs to be done?
+            Add a new goal
           </label>
         </h2>
         <input

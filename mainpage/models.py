@@ -34,3 +34,31 @@ class Goal(models.Model):
     
     def get_absolute_url(self):
         return reverse('goal-detail-view', args=[str(self.id)])
+    
+class Theme(models.Model):
+    name = models.CharField(max_length = 200)
+    owner = models.OneToOneField(User, related_name='theme', on_delete=models.CASCADE)
+    def __str__(self):
+        return self.name
+    
+class GoalInstance(models.Model):
+    goal = models.ForeignKey(Goal, related_name='goal', on_delete=models.CASCADE)
+    date_created = models.DateField(auto_now_add=True)
+
+    COMPLETED_STATUS = (
+     ('n','Not Completed'),
+     ('h','Half Completed'),
+     ('c','Completed'),
+    )
+    status = models.CharField(
+        max_length=1,
+        choices=COMPLETED_STATUS,
+        blank=True,
+        default='n',
+        help_text='Completion status of goal'
+    )
+
+class Entry(models.Model):
+    title = models.CharField(max_length=200)
+    text = models.TextField(max_length = 10000)
+
