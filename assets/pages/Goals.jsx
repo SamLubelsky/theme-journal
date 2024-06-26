@@ -1,4 +1,4 @@
-import Goal from "../components/Goal.jsx";
+import EditableItem from "../components/EditableItem.jsx";
 import Form from "../components/Form.jsx";
 import FilterButton from "../components/FilterButton.jsx";
 import Sidebar from "../components/Sidebar.jsx"
@@ -78,14 +78,12 @@ function Goals(props){
     }
     const goalList = goals.filter(FILTER_MAP[filter])
     .map((goal) => (
-      <Goal
+      <EditableItem
       id={goal.id} 
       name = {goal.name} 
-      completed={goal.archived}
       key = {goal.id}
-      toggleGoalCompleted={toggleGoalArchived}
-      deleteGoal={deleteGoal}
-      editGoal={editGoal}
+      deleteItem={toggleGoalArchived}
+      editItem={editGoal}
       />
     ));
     const filterList = FILTER_NAMES.map((name) => (

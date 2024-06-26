@@ -18,6 +18,16 @@ function Theme(props){
           credentials: "include",
         });
       }
+      function deleteTheme(id){
+        setTheme("");
+        fetch(`/home/themes/${id}`,{
+          method: "DELETE",
+          headers: {'X-CSRFToken': csrftoken,
+            'Content-Type':'application/json'
+          },
+          credentials: "include",
+        });
+      }
     const noThemeTemplate = (
         <div className="todoapp stack-large">
             <h1>You have not selected a theme yet.</h1>
@@ -26,9 +36,15 @@ function Theme(props){
     );
     const themeTemplate = (
         <div className="todoapp stack-large">
-            <h1>Your theme is: {theme}</h1>
+            <EditableItem 
+            name={`Theme is: ${theme.name}`}
+            id={theme.id}
+            key={theme.id}
+            deleteItem={deleteTheme}
+            
+            />
         </div>
     );
-    return theme===""? noThemeTemplate: themeTemplate;
+    return theme.name === ""? noThemeTemplate: themeTemplate;
 }
 export default Theme;

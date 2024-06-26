@@ -19,4 +19,4 @@ class ThemeSerializer(serializers.HyperlinkedModelSerializer):
     owner = serializers.ReadOnlyField(source='owner.username')
     class Meta:
         model = Theme
-        fields = ['name','owner']
+        fields = ['id','name','owner']

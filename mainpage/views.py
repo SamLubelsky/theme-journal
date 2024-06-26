@@ -22,11 +22,14 @@ class MainPageView(LoginRequiredMixin, TemplateView):
             theme = self.request.user.theme
         except:
             theme = ""
+            theme.id = 1
+        context['theme'] = [{'name': theme.name,'id': f'{theme.id}'}]
+        print("theme:", theme)
+        print(theme.id)
         if not(goals):
             context['goals'] = []
-            return context
-        context['goals'] = [{'name': goal.name, 'archived': goal.archived, 'id': f'{goal.id}'} for goal in goals]
-        context['theme'] = theme
+        else:
+            context['goals'] = [{'name': goal.name, 'archived': goal.archived, 'id': f'{goal.id}'} for goal in goals]
         return context
 
 class UserViewSet(viewsets.ReadOnlyModelViewSet):
@@ -41,7 +44,7 @@ class GoalViewSet(viewsets.ModelViewSet):
     def perform_create(self, serializer):
         serializer.save(owner=self.request.user)
 
-class GoalViewSet(viewsets.ModelViewSet):
+class ThemeViewSet(viewsets.ModelViewSet):
     serializer_class = ThemeSerializer
     permission_classes = [permissions.IsAuthenticated]
     def get_queryset(self):

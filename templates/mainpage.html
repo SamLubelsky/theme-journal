@@ -9,7 +9,7 @@
     {% block content%}
     <div id="root" ></div>
     {{ goals|json_script:'goals' }}
-    <div id="theme">{{theme}}</div>
+    {{ theme|json_script:'theme' }}
     <script src="{% static 'index-bundle.js' %}"></script>
     {% endblock %}
   </body>

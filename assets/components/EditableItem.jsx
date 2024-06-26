@@ -1,6 +1,6 @@
 import {useState} from "react";
 import React from "react";
-function Todo(props){
+function EditableItem(props){
   const [isEditing, setEditing] = useState(false);
   const [newName, setNewName] = useState("");
   function handleChange(e){
@@ -8,7 +8,7 @@ function Todo(props){
   }
   function handleSubmit(e){
     e.preventDefault();
-    props.editGoal(props.id, newName);
+    props.editItem(props.id, newName);
     setNewName("");
     setEditing(false);
   }
@@ -42,17 +42,16 @@ function Todo(props){
   );
   const viewTemplate = (
     <div className="stack-small">
-      <div className="c-cb">
+      {/* <div className="c-cb">
         <input
           id={props.id}
           type="checkbox"
           defaultChecked={props.completed}
           onChange={() => props.toggleGoalCompleted(props.id)}
-        />
+        /> */}
         <label className="todo-label" htmlFor={props.id}>
           {props.name}
         </label>
-      </div>
       <div className="btn-group">
         <button type="button" className="btn" onClick={()=>setEditing(true)}>
           Edit <span className="visually-hidden">{props.name}</span>
@@ -60,7 +59,7 @@ function Todo(props){
         <button
           type="button"
           className="btn btn__danger"
-          onClick={() => props.deleteGoal(props.id)}>
+          onClick={() => props.deleteItem(props.id)}>
           Delete <span className="visually-hidden">{props.name}</span>
         </button>
       </div>
@@ -68,4 +67,4 @@ function Todo(props){
   );
   return <li className="todo">{isEditing? editingTemplate: viewTemplate}</li>;
 }
-export default Todo;
+export default EditableItem;

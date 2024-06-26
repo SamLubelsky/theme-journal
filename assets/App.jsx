@@ -1,4 +1,3 @@
-import Todo from "./components/Goal.jsx";
 import Form from "./components/Form.jsx";
 import FilterButton from "./components/FilterButton.jsx";
 import Sidebar from "./components/Sidebar.jsx"
