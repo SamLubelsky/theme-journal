@@ -98,7 +98,7 @@ function Goals(props){
     return (      
       <div className="todoapp stack-large">
         <h1>Manage Goals</h1>
-        <Form addItem={addGoal}/>
+        <Form addItem={addGoal} formText="Add a new goal"/>
         <div className="filters btn-group stack-exception">
           {filterList}
         </div>

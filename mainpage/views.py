@@ -20,12 +20,9 @@ class MainPageView(LoginRequiredMixin, TemplateView):
         goals = Goal.objects.filter(owner__exact=self.request.user)
         try:
             theme = self.request.user.theme
+            context['theme'] = {'name': theme.name,'id': f'{theme.id}'}
         except:
-            theme = ""
-            theme.id = 1
-        context['theme'] = [{'name': theme.name,'id': f'{theme.id}'}]
-        print("theme:", theme)
-        print(theme.id)
+            context['theme'] = {'name': "",'id': 0}
         if not(goals):
             context['goals'] = []
         else:
@@ -49,7 +46,8 @@ class ThemeViewSet(viewsets.ModelViewSet):
     permission_classes = [permissions.IsAuthenticated]
     def get_queryset(self):
         try:
-            return self.request.user.theme
+            self.request.user.theme
+            return Theme.objects.filter(owner__exact=self.request.user)
         except:
             return Theme.objects.none()
     def perform_create(self, serializer):

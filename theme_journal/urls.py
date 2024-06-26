@@ -40,11 +40,11 @@ router.register(r'users', UserViewSet)
 
 urlpatterns = [
     path('admin/', admin.site.urls),
+    path('api-auth/', include('rest_framework.urls', namespace='rest_framework')),
     path('', RedirectView.as_view(url='home/', permanent=True), name='index'),
     path('users/', include(router.urls)),
     path('home/', include('mainpage.urls')),
     path('accounts/', include('django.contrib.auth.urls')),
     path('hello-webpack/', TemplateView.as_view(template_name='hello_webpack.html')),
-    path('api-auth/', include('rest_framework.urls', namespace='rest_framework')),
-    re_path(r"^(?:.*)?$", RedirectView.as_view(url='/',permanent=True))
+    re_path(r"^(?:.*)?$", RedirectView.as_view(url='/',permanent=True)),
 ] + static(settings.STATIC_URL, document_root=settings.STATIC_ROOT)
