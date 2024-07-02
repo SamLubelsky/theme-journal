@@ -4,13 +4,14 @@ from django.contrib.auth.decorators import login_required
 from django.utils.decorators import method_decorator
 from django.contrib.auth.mixins import LoginRequiredMixin
 from rest_framework import generics
-from .serializers import GoalSerializer, UserSerializer, ThemeSerializer
-from .models import Goal, Theme
+from .serializers import GoalSerializer, UserSerializer, ThemeSerializer, EntrySerializer
+from .models import Goal, Theme, Entry
 from django.contrib.auth.models import User
 from rest_framework.decorators import api_view
 from rest_framework.response import Response
 from rest_framework.reverse import reverse
 from rest_framework import viewsets, permissions
+from django.utils import timezone
 # Create your views here.
 class MainPageView(LoginRequiredMixin, TemplateView):
     template_name = 'mainpage.html'
@@ -52,3 +53,13 @@ class ThemeViewSet(viewsets.ModelViewSet):
             return Theme.objects.none()
     def perform_create(self, serializer):
         serializer.save(owner=self.request.user)
+
+class EntryViewSet(viewsets.ModelViewSet):
+    serializer_class = EntrySerializer
+    permission_classes = [permissions.IsAuthenticated]
+    def get_queryset(self):
+        return Entry.objects.filter(owner__exact=self.request.user)
+    def perform_create(self, serializer):
+        serializer.save(owner=self.request.user)
+    def perform_update(self, serializer):
+        serializer.save(owner=self.request.user, last_updated=timezone.now())

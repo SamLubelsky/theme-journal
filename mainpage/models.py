@@ -2,6 +2,7 @@ from django.db import models
 from django.conf import settings
 from django.urls import reverse
 from django.contrib.auth.models import User
+from django.utils import timezone
 # Create your models here.
 class Task(models.Model):
     name = models.CharField(max_length = 200)
@@ -59,6 +60,12 @@ class GoalInstance(models.Model):
     )
 
 class Entry(models.Model):
-    title = models.CharField(max_length=200)
-    text = models.TextField(max_length = 10000)
+    title = models.CharField(max_length=200, null=True, blank=True)
+    body = models.TextField(max_length = 10000, null=True, blank=True)
+    owner = models.ForeignKey(User, related_name='entries',on_delete=models.CASCADE, null=True)
+    time_created = models.DateTimeField(default=timezone.now)
+    last_updated = models.DateTimeField(default=timezone.now)
+
+    class Meta:
+        ordering= ['-time_created']
 

@@ -8,13 +8,18 @@ import Cookies from 'js-cookie'
 import {BrowserRouter as Router, Routes, Route} from 'react-router-dom'
 import Goals from "./pages/Goals.jsx"
 import Theme from "./pages/Theme.jsx"
+import Home from "./pages/Home.jsx"
+import Settings from "./pages/Settings.jsx"
+import 'bootstrap/dist/css/bootstrap.css'
 function App(props) {
   return (
     <Router>
       <Sidebar/>
       <Routes>
+        <Route path='/home' element={<Home/>}/>
         <Route path='/goals' element={<Goals goals={props.goals}/>}/>
         <Route path='/theme' element={<Theme theme={props.theme}/>}/>
+        <Route path='/settings' element={<Settings/>}/>
       </Routes>
     </Router>
   );

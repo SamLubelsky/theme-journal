@@ -21,6 +21,7 @@ router = DefaultRouter()
 router.register(r'goals', views.GoalViewSet, basename='goal')
 router.register(r'users', views.UserViewSet, basename='user')
 router.register(r'themes', views.ThemeViewSet, basename='theme')
+router.register(r'entries', views.EntryViewSet, basename='entry')
 #router.register(r'goals', GoalViewSet, basename="tasks")
 #router.register(r'taskList',TaskListViewSet)
 urlpatterns = [ 
