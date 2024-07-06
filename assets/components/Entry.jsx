@@ -28,16 +28,25 @@ function Entry(props){
             credentials: "include",
           });
     }
-    function changeTitle(e){
+    function resolveAfter1Second() {
+        return new Promise((resolve) => {
+          setTimeout(() => {
+            resolve('resolved');
+          }, 1000);
+        });
+      }
+    async function changeTitle(e){
         setSavingText("saving...");
         setTitle(e.target.value)
         handleChange(e.target.value, body);
+        await resolveAfter1Second();
         setSavingText("saved to the cloud");
     }
-    function changeBody(e){
+    async function changeBody(e){
         setSavingText("saving...");
         setBody(e.target.value)
         handleChange(title, e.target.value);
+        await resolveAfter1Second();
         setSavingText("saved to the cloud");
     }
     useEffect(()=>{

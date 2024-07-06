@@ -1,6 +1,7 @@
 from django.contrib import admin
-from .models import TaskList, Task, Goal
+from .models import Entry, Goal, Theme, GoalInstance
 # Register your models here.
-admin.site.register(TaskList)
-admin.site.register(Task)
 admin.site.register(Goal)
+admin.site.register(GoalInstance)
+admin.site.register(Theme)
+admin.site.register(Entry)
