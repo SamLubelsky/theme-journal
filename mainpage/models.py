@@ -8,7 +8,7 @@ class Goal(models.Model):
     name = models.CharField(max_length = 200)
     owner = models.ForeignKey(User, related_name='goals',on_delete=models.CASCADE)
     archived = models.BooleanField(default=False)
-
+    days = models.JSONField(default=dict)
     def __str__(self):
         return f'{self.name} - {self.owner}'
     
@@ -23,7 +23,7 @@ class Theme(models.Model):
     
 class GoalInstance(models.Model):
     goal = models.ForeignKey(Goal, related_name='goal', on_delete=models.CASCADE)
-    date_created = models.DateField(auto_now_add=True)
+    time_created = models.DateField(default=timezone.now)
 
     COMPLETED_STATUS = (
      ('n','Not Completed'),

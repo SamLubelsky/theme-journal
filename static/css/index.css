@@ -294,3 +294,7 @@ body {
   opacity: 1;
 }
 /* End checkbox styles */
+table{
+  border-collapse:separate;
+  border-spacing:15px;
+}

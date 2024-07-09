@@ -64,12 +64,31 @@ function Goals(props){
         credentials: "include",
       });
     }
-    function addGoal(name){
-      const newGoal = {id: `${nanoid()}`, name, archived: false}
+    function addGoal(newName){
+      const oldGoals = goals.filter((goal)=>goal.name.toUpperCase()===newName.toUpperCase());
+      if(oldGoals.length >= 1){
+        const newGoals = goals.map((goal)=>{
+          if(goal.name.toUpperCase() === newName.toUpperCase()){
+              fetch(`/home/goals/${goal.id}/`,{
+                method: "PATCH",
+                body:`{"name":"${newName}", "archived":false}`,
+                headers: {'X-CSRFToken': csrftoken,
+                  'Content-Type':'application/json'
+                },
+                credentials: "include",
+              });
+            return {id: goal.id, name: newName, archived: false}
+          }
+          return goal;
+        });
+        setGoals(newGoals);
+        return;
+      }
+      const newGoal = {id: `${nanoid()}`, name: newName, archived: false}
       setGoals([...goals, newGoal]);
       fetch(`/home/goals/`,{
         method: "POST",
-        body:`{"id":"${newGoal.id}", "name":"${name}", "archived":"FALSE"}`,
+        body:`{"id":"${newGoal.id}", "name":"${newName}", "archived":"FALSE"}`,
         headers: {'X-CSRFToken': csrftoken,
           'Content-Type':'application/json'
         },

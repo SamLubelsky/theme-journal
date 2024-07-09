@@ -19,6 +19,7 @@ class MainPageView(LoginRequiredMixin, TemplateView):
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
         goals = Goal.objects.filter(owner__exact=self.request.user)
+        print(Goal.objects.filter(pk__exact=15))
         try:
             theme = self.request.user.theme
             context['theme'] = {'name': theme.name,'id': f'{theme.id}'}
@@ -37,6 +38,16 @@ class UserViewSet(viewsets.ReadOnlyModelViewSet):
 class GoalViewSet(viewsets.ModelViewSet):
     serializer_class = GoalSerializer
     permission_classes = [permissions.IsAuthenticated]
+    pagination_class = None
+    def get_queryset(self):
+        return Goal.objects.filter(owner__exact=self.request.user)
+    def perform_create(self, serializer):
+        serializer.save(owner=self.request.user)
+
+class GoalInstanceViewSet(viewsets.ModelViewSet):
+    serializer_class = GoalSerializer
+    permission_classes = [permissions.IsAuthenticated]
+    pagination_class = None
     def get_queryset(self):
         return Goal.objects.filter(owner__exact=self.request.user)
     def perform_create(self, serializer):

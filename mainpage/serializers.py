@@ -13,7 +13,14 @@ class GoalSerializer(serializers.HyperlinkedModelSerializer):
     owner = serializers.ReadOnlyField(source='owner.username')
     class Meta:
         model = Goal
+        fields = ['id','name','owner','archived','days']
+
+class GoalInstanceSerializer(serializers.HyperlinkedModelSerializer):
+    owner = serializers.ReadOnlyField(source='owner.username')
+    class Meta:
+        model = Goal
         fields = ['id','name','owner','archived']
+
 
 class ThemeSerializer(serializers.HyperlinkedModelSerializer):
     owner = serializers.ReadOnlyField(source='owner.username')
