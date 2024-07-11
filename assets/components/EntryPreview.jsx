@@ -7,10 +7,11 @@ function EntryPreview(props){
     const bodyText = props.body.substring(0,100);
     const ellipses = props.body.length > 100 ? "..." : ""
     return(
-        <div id = 'entryPreview' style={{border: "solid black"}}>
-            <Link to={`/entry/${props.id}`}>{props.title}</Link>
-            <p>{`${bodyText} ${ellipses} `}</p>
-        </div>
+        // <div id = 'entryPreview' style={{border: "solid black"}}>
+        //     <Link to={`/entry/${props.id}`}>{props.title}</Link>
+        //     <p>{`${bodyText} ${ellipses} `}</p>
+        // </div>
+        <a href={`/entry/${props.id}`}> {props.title} </a>
     )
 }
 export default EntryPreview;

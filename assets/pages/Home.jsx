@@ -6,6 +6,8 @@ import { json } from "react-router-dom";
 import { Link , useNavigate } from 'react-router-dom'
 import EntryPreview from "../components/EntryPreview.jsx";
 import GoalDisplay from "../components/GoalDisplay.jsx";
+import CreatableEntry from "../components/CreatableEntry.jsx"
+import '../../static/css/home.css'
 function Home(props){
     const csrftoken = Cookies.get('csrftoken');
     const [mode, setMode] = useState("Not Received")
@@ -46,21 +48,41 @@ function Home(props){
         }
         const listItems = entries.map((entry) =>{
             return (
-            <li key={entry.id}>
             <EntryPreview title={entry.title} body={entry.body} id={entry.id}/>
-            </li>
             );
         }); 
-        return <ul>{listItems}</ul>
+        return <div className="btn-group-vertical">{listItems}</div>
+    }
+    function GetTodayEntryOrNew(){
+        if(mode==="Received"){
+            const mostRecentEntry = entries[0];
+            const today = new Date();
+            const mostRecentDate = new Date(mostRecentEntry.time_created);
+            if(mostRecentDate.toDateString() === today.toDateString()){ //check if the two dates are from the same day)
+                return <Entry entryId={mostRecentEntry.id} />
+            }
+        }
+        return <CreatableEntry />
     }
     const navigate = useNavigate();
     return (
-    <>
-    <button type="button" className="btn btn-danger btn-lg btn-block" onClick={()=>navigate("/new-entry")}>Create New Entry</button>
-    <hr />
-    <DisplayEntries />
-    <GoalDisplay />
-    </>
+    <div className="container">
+        <div className="row">
+            <div className="col-md-auto">
+                <DisplayEntries />
+            </div>
+            <div className="col-md-auto">
+                {/* <div className="d-grid gap-2">
+                <button type="button" className="btn btn-danger btn-lg btn-primary" onClick={()=>navigate("/new-entry")}>Create New Entry</button>
+                </div> */}
+                {/* <CreatableEntry /> */}
+                <GetTodayEntryOrNew />
+            </div>
+            <div className="col-md-auto">
+                <GoalDisplay />
+            </div>
+        </div>
+    </div>
     );
 }
 export default Home;

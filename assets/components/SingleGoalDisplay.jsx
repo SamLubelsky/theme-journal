@@ -86,7 +86,6 @@ function SingleGoalDisplay(props){
         curDate.setDate(monday.getDate() + i);
         days.push(curDate);
     }
-    console.log("regenerating buttons");
     const buttons = days.map((day)=>{
         return  <td key={`${day}_${props.id}_${clickStatus[day]}`}>{createButton(day)}</td>;
     });
