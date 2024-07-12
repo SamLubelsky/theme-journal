@@ -66,6 +66,7 @@ class ThemeViewSet(viewsets.ModelViewSet):
         serializer.save(owner=self.request.user)
 
 class EntryViewSet(viewsets.ModelViewSet):
+    pagination_class = None
     serializer_class = EntrySerializer
     permission_classes = [permissions.IsAuthenticated]
     def get_queryset(self):

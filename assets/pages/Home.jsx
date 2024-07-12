@@ -13,18 +13,17 @@ function Home(props){
     const [mode, setMode] = useState("Not Received")
     const [id, setId] = useState(-1);
     const [entries, setEntries] = useState({});
+    const [recentEntries, setRecentEntries] = useState({});
     useEffect(()=>{
-        getEntries();
+        getRecentEntries();
     });
-    async function getEntriesFromToday(){
-        const entries = getEntries();
-        const today = new Date();
-        const entriesFromToday = entries.results.filter((entry)=> {
-            const entryDate = new Date(entry.time_created);
-            return entryDate.toDateString() === today.toDateString();
-        });
-        //console.log(entriesFromToday);
-        return entriesFromToday;
+    async function getRecentEntries(){
+        const newEntries = await getEntries();
+        if(newEntries === undefined){
+            return;
+        }
+        //console.log(newEntries);    
+        setRecentEntries(newEntries.slice(0, 10));
     }
     async function getEntries(){
         if(mode === "Received"){
@@ -38,22 +37,23 @@ function Home(props){
             credentials: "include",
         });
         const entries = await response.json();
-        //console.log(entries);
-        setEntries(entries.results);
+        //entries);
+        setEntries(entries);
         setMode("Received");
+        return entries;
     }
     function DisplayEntries(){
-        if(Object.keys(entries).length === 0){
+        if(Object.keys(recentEntries).length === 0){
             return;
         }
-        const listItems = entries.map((entry, index) =>{
+        const listItems = recentEntries.map((entry, index) =>{
             if(index == 0) return <EntryPreview key={entry.id} title={entry.title} body={entry.body} id={entry.id} active={true} />
             return <EntryPreview key={entry.id} title={entry.title} body={entry.body} id={entry.id} active={false}/>;
         }); 
         return <div className="btn-group-vertical">{listItems}</div>
     }
     function GetTodayEntryOrNew(){
-        if(mode==="Received" && entries.length > 0  ){
+        if(mode==="Received" && recentEntries.length > 0){
             const mostRecentEntry = entries[0];
             const today = new Date();
             const mostRecentDate = new Date(mostRecentEntry.time_created);
