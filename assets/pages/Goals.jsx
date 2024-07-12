@@ -71,7 +71,7 @@ function Goals(props){
           if(goal.name.toUpperCase() === newName.toUpperCase()){
               fetch(`/home/goals/${goal.id}/`,{
                 method: "PATCH",
-                body:`{"name":"${newName}", "archived":false}`,
+                body:`{"id":${goal.id}, "name":"${newName}", "archived":false}`,
                 headers: {'X-CSRFToken': csrftoken,
                   'Content-Type':'application/json'
                 },

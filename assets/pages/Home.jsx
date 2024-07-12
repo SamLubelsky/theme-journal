@@ -46,15 +46,14 @@ function Home(props){
         if(Object.keys(entries).length === 0){
             return;
         }
-        const listItems = entries.map((entry) =>{
-            return (
-            <EntryPreview title={entry.title} body={entry.body} id={entry.id}/>
-            );
+        const listItems = entries.map((entry, index) =>{
+            if(index == 0) return <EntryPreview key={entry.id} title={entry.title} body={entry.body} id={entry.id} active={true} />
+            return <EntryPreview key={entry.id} title={entry.title} body={entry.body} id={entry.id} active={false}/>;
         }); 
         return <div className="btn-group-vertical">{listItems}</div>
     }
     function GetTodayEntryOrNew(){
-        if(mode==="Received"){
+        if(mode==="Received" && entries.length > 0  ){
             const mostRecentEntry = entries[0];
             const today = new Date();
             const mostRecentDate = new Date(mostRecentEntry.time_created);
@@ -66,15 +65,15 @@ function Home(props){
     }
     const navigate = useNavigate();
     return (
-    <div className="container">
-        <div className="row">
+    <div className="container-fluid">
+        <div className="row row-cols-3">
             <div className="col-md-auto">
                 <DisplayEntries />
             </div>
             <div className="col-md-auto">
-                {/* <div className="d-grid gap-2">
+                <div className="d-grid gap-2">
                 <button type="button" className="btn btn-danger btn-lg btn-primary" onClick={()=>navigate("/new-entry")}>Create New Entry</button>
-                </div> */}
+                </div>
                 {/* <CreatableEntry /> */}
                 <GetTodayEntryOrNew />
             </div>
