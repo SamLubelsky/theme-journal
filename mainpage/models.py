@@ -9,6 +9,7 @@ class Goal(models.Model):
     owner = models.ForeignKey(User, related_name='goals',on_delete=models.CASCADE)
     archived = models.BooleanField(default=False)
     days = models.JSONField(default=dict)
+    time_created = models.DateField(default=timezone.now)
     def __str__(self):
         return f'{self.name} - {self.owner}'
     

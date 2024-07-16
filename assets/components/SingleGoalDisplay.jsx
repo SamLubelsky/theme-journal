@@ -55,9 +55,13 @@ function SingleGoalDisplay(props){
           });
     }
     function createButton(day){
+        const size = props.displayLength === "week" ? 50: 40
         let leftHalf = <path className="cls-2" d="M753.86,693.79c-45.43-45.78-70.41-106.49-70.35-171.01.05-64.69,25.28-125.51,71.02-171.26,45.8-45.8,106.7-71.02,171.47-71.02s125.08,24.98,170.8,70.35l-342.94,342.94Z"/>
         let rightHalf = <path className="cls-3" d="M926,765.5c-64.76,0-125.64-25.21-171.44-71l342.95-342.95c45.78,45.8,71,106.68,71,171.44s-25.22,125.67-71.03,171.47c-45.8,45.8-106.7,71.03-171.47,71.03Z"/>
         const dateString = day.toDateString();
+        if(day < new Date(props.time_created)){
+            return;
+        }
         if(clickStatus[dateString] == 1){
             leftHalf = <path style={{fill: "gray"}} className="cls-2" d="M753.86,693.79c-45.43-45.78-70.41-106.49-70.35-171.01.05-64.69,25.28-125.51,71.02-171.26,45.8-45.8,106.7-71.02,171.47-71.02s125.08,24.98,170.8,70.35l-342.94,342.94Z"/>
         }
@@ -66,7 +70,7 @@ function SingleGoalDisplay(props){
             rightHalf = <path style={{fill: "gray"}} className="cls-3" d="M926,765.5c-64.76,0-125.64-25.21-171.44-71l342.95-342.95c45.78,45.8,71,106.68,71,171.44s-25.22,125.67-71.03,171.47c-45.8,45.8-106.7,71.03-171.47,71.03Z"/>
         }
         return (
-                <svg width="50" height="50" id="Layer_1" data-name="Layer 1" xmlns="http://www.w3.org/2000/svg" version="1.1" viewBox="683 280 486 486">
+                <svg width={size} height={size} id="Layer_1" data-name="Layer 1" xmlns="http://www.w3.org/2000/svg" version="1.1" viewBox="683 280 486 486">
                     <g className="hell">
                         <a href="#" onClick={()=>registerHalfClick(day)}>
                         {leftHalf}
@@ -81,13 +85,26 @@ function SingleGoalDisplay(props){
         );
     }
     const days = []
-    for(let i = -1; i < 6; i++){
-        const curDate = new Date();
-        curDate.setDate(monday.getDate() + i);
-        days.push(curDate);
+    if(props.displayLength === "week"){
+        for(let i = -1; i < 6; i++){
+            const curDate = new Date();
+            curDate.setDate(monday.getDate() + i);
+            days.push(curDate);
+        }
     }
+    if(props.displayLength === "month"){
+        console.log(props.month);
+        let curDate = new Date(props.year, props.month, 1);
+        const endDate = new Date(curDate.getFullYear(), curDate.getMonth() + 1, 0);
+        while(curDate <= endDate){
+            days.push(curDate);
+            curDate = new Date(curDate.getFullYear(), curDate.getMonth(), curDate.getDate() + 1);
+        }
+    }
+    //console.log(props.days);
     const buttons = days.map((day)=>{
-        return  <td key={`${day}_${props.id}_${clickStatus[day]}`}>{createButton(day)}</td>;
+        if(!(day.toDateString() in clickStatus)) return <td key={`${day}_${props.id}_${0}`}>{createButton(day)}</td>;
+        return  <td key={`${day}_${props.month}_${props.year}_${props.id}_${clickStatus[day.toDateString()]}`}>{createButton(day)}</td>;
     });
     //console.log(buttons);
     return (

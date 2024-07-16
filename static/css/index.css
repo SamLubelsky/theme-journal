@@ -298,3 +298,10 @@ table{
   border-collapse:separate;
   border-spacing:15px;
 }
+.btn-group-vertical{
+  width:200px;
+}
+.pagination{
+  position:absolute;
+  bottom: 0;
+}

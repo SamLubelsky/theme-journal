@@ -11,9 +11,10 @@ class UserSerializer(serializers.HyperlinkedModelSerializer):
 
 class GoalSerializer(serializers.HyperlinkedModelSerializer):
     owner = serializers.ReadOnlyField(source='owner.username')
+    time_created = serializers.ReadOnlyField()
     class Meta:
         model = Goal
-        fields = ['id','name','owner','archived','days']
+        fields = ['id','name','owner','archived','days','time_created']
 
 class GoalInstanceSerializer(serializers.HyperlinkedModelSerializer):
     owner = serializers.ReadOnlyField(source='owner.username')

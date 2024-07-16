@@ -8,23 +8,14 @@ import EntryPreview from "../components/EntryPreview.jsx";
 import GoalDisplay from "../components/GoalDisplay.jsx";
 import CreatableEntry from "../components/CreatableEntry.jsx"
 import '../../static/css/home.css'
+import EntryDisplay from "../components/EntryDisplay.jsx";
 function Home(props){
     const csrftoken = Cookies.get('csrftoken');
     const [mode, setMode] = useState("Not Received")
-    const [id, setId] = useState(-1);
     const [entries, setEntries] = useState({});
-    const [recentEntries, setRecentEntries] = useState({});
     useEffect(()=>{
-        getRecentEntries();
+        getEntries();
     });
-    async function getRecentEntries(){
-        const newEntries = await getEntries();
-        if(newEntries === undefined){
-            return;
-        }
-        //console.log(newEntries);    
-        setRecentEntries(newEntries.slice(0, 10));
-    }
     async function getEntries(){
         if(mode === "Received"){
             return;
@@ -43,17 +34,13 @@ function Home(props){
         return entries;
     }
     function DisplayEntries(){
-        if(Object.keys(recentEntries).length === 0){
+        if(Object.keys(entries).length === 0){
             return;
         }
-        const listItems = recentEntries.map((entry, index) =>{
-            if(index == 0) return <EntryPreview key={entry.id} title={entry.title} body={entry.body} id={entry.id} active={true} />
-            return <EntryPreview key={entry.id} title={entry.title} body={entry.body} id={entry.id} active={false}/>;
-        }); 
-        return <div className="btn-group-vertical">{listItems}</div>
+        return <EntryDisplay key={entries[0].id} id={entries[0].id}/>
     }
     function GetTodayEntryOrNew(){
-        if(mode==="Received" && recentEntries.length > 0){
+        if(mode==="Received" && entries.length > 0){
             const mostRecentEntry = entries[0];
             const today = new Date();
             const mostRecentDate = new Date(mostRecentEntry.time_created);
@@ -78,7 +65,7 @@ function Home(props){
                 <GetTodayEntryOrNew />
             </div>
             <div className="col-md-auto">
-                <GoalDisplay />
+                <GoalDisplay displayLength="week"/>
             </div>
         </div>
     </div>
