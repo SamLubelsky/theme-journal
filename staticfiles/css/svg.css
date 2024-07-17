@@ -1,0 +1,32 @@
+.cls-1 {
+    fill: #000;
+  }
+
+  .cls-1, .cls-2 {
+    stroke-width: 0px;
+  }
+
+  .cls-2 {
+    fill: #fff;
+  }
+  .cls-3{
+    fill: #fff;
+  }
+  /* path:hover{
+    fill: purple;
+  } */
+  path.cls-3:hover{
+    fill: lightgray;
+  }
+  g.hell:hover .cls-2{
+    fill:lightgray;
+  }  
+  /* g.hell:hover .cls-2{
+    fill:blue;
+  } */
+  /* .wholeImage:hover{
+    fill:blue;
+  } */
+/* .wholeImage{
+    all:none;
+} */
