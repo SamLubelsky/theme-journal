@@ -62,6 +62,9 @@ function SingleGoalDisplay(props){
         if(day < new Date(props.time_created)){
             return;
         }
+        if(day > new Date()){
+            return;
+        }
         if(clickStatus[dateString] == 1){
             leftHalf = <path style={{fill: "gray"}} className="cls-2" d="M753.86,693.79c-45.43-45.78-70.41-106.49-70.35-171.01.05-64.69,25.28-125.51,71.02-171.26,45.8-45.8,106.7-71.02,171.47-71.02s125.08,24.98,170.8,70.35l-342.94,342.94Z"/>
         }
@@ -93,7 +96,6 @@ function SingleGoalDisplay(props){
         }
     }
     if(props.displayLength === "month"){
-        console.log(props.month);
         let curDate = new Date(props.year, props.month, 1);
         const endDate = new Date(curDate.getFullYear(), curDate.getMonth() + 1, 0);
         while(curDate <= endDate){

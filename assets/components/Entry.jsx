@@ -38,7 +38,10 @@ function Entry(props){
     async function changeTitle(e){
         setSavingText("saving...");
         setTitle(e.target.value)
-        handleChange(e.target.value, body);
+        props.setTitle(e.target.value);
+        if(e.target.value !== ""){
+          handleChange(e.target.value, body);        
+        }
         await resolveAfter1Second();
         setSavingText("saved to the cloud");
     }

@@ -31,8 +31,10 @@ function Entry(props){
             credentials: "include",
         });
         const json = await response.json()
+        if(Object.hasOwn(props, "setNewId")){
+            props.setNewId(json.id);
+        }
         setId(json.id);
-        console.log(json.id);
         setMode("Created")
     }
     function resolveAfter1Second() {
@@ -50,16 +52,18 @@ function Entry(props){
         }
         setSavingText("saving...");
         setTitle(e.target.value)
+        props.setTitle(e.target.value)
         await resolveAfter1Second();
         setSavingText("saved to the cloud");
     }
     async function changeBody(e){
         if(mode === "Not Created"){
-            console.log("creating new");
+            //console.log("creating new");
             const date = new Date();
             const newTitle = date.toDateString();
             createEntry(newTitle, e.target.value)
             setTitle(newTitle)
+            props.setTitle(newTitle)
         } else{
             handleChange(title, e.target.value);
         }

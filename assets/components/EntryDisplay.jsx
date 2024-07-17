@@ -3,22 +3,25 @@ import Cookies from 'js-cookie';
 import {takeRight} from 'lodash';
 import EntryPreview from "./EntryPreview.jsx";
 import {Link} from "react-router-dom";
+const num_entries = 15;
 function EntryDisplay(props){
     const csrftoken = Cookies.get('csrftoken');
-    const [mode, setMode] = useState("Not Received")
-    const [nearbyEntries, setNearbyEntries] = useState({});
-    const [oldId, setOldId] = useState(-1);
+    const [entries, setEntries] = useState("Entries Loading...");
+    const [oldId, setOldId] = useState(-2);
     const id = props.id;
     useEffect(()=>{
-        GetNearbyEntries();
-    });
-    async function GetNearbyEntries(){
-        const entries = await getEntries();
-        if(entries === undefined){
-            return;
-        }
+        getEntries();
+        //console.log("getting");
+    }, [props.title]);
+    //console.log(props.title);
+    function getNearbyEntries(){
         const currentEntry = entries.filter((entry)=>id==entry.id)[0];
-        const currentEntryTime = new Date(currentEntry.time_created)
+        let currentEntryTime;
+        if(currentEntry === undefined){
+            currentEntryTime = new Date();
+        } else{
+            currentEntryTime = new Date(currentEntry.time_created)
+        }
         const moreRecentEntries = entries.filter((entry)=>{
             const entryTime = new Date(entry.time_created)
             return entryTime > currentEntryTime;
@@ -28,21 +31,21 @@ function EntryDisplay(props){
             return entryTime <= currentEntryTime;
         })
         let moreRecentCount;
-        if(moreRecentEntries.length >= 5){
-            moreRecentCount = 5;
+        if(moreRecentEntries.length >= Math.floor(num_entries / 2)){
+            moreRecentCount = Math.floor(num_entries / 2);
         } else{
             moreRecentCount = moreRecentEntries.length;
         }
-        const lessRecentCount = 11 - moreRecentCount;
+        const lessRecentCount = num_entries + 1 - moreRecentCount;
         const aboveElements = takeRight(moreRecentEntries, moreRecentCount);
         const belowElements = lessRecentEntries.slice(0, lessRecentCount);
         const nearbyEntries = aboveElements.concat(belowElements);
-        setNearbyEntries(nearbyEntries);
+        return nearbyEntries;
     }
-    async function getEntries(){
-        if(mode === "Received" && id == oldId){
-            return;
-        }
+    function getEntries(){
+        fetchEntries().then(entries=>setEntries(entries))
+    }
+    async function fetchEntries(){
         const response = await fetch(`/home/entries/`,{
             method: "GET",
             headers: {'X-CSRFToken': csrftoken,
@@ -51,14 +54,10 @@ function EntryDisplay(props){
             credentials: "include",
         });
         const entries = await response.json();
-        setMode("Received");
-        setOldId(id);
         return entries;
     }
     function DisplayEntries(){
-        if(Object.keys(nearbyEntries).length === 0){
-            return;
-        }
+        const nearbyEntries = getNearbyEntries();
         const listItems = nearbyEntries.map((entry) =>{
             if(entry.id == id) return <EntryPreview key={entry.id} title={entry.title} body={entry.body} id={entry.id} active={true} />
             return <EntryPreview key={entry.id} title={entry.title} body={entry.body} id={entry.id} active={false}/>;
@@ -66,6 +65,6 @@ function EntryDisplay(props){
         listItems.push(<Link key={-1} className="btn btn-secondary" to='/all-entries'> See all entries</Link>)
         return <div className="btn-group-vertical btn-group-lg">{listItems}</div>
     }
-    return DisplayEntries();
+    return entries === "Entries Loading..." ? entries : DisplayEntries();
 }
 export default EntryDisplay;

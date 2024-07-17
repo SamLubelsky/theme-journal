@@ -4,8 +4,8 @@ import {useNavigate, Link} from 'react-router-dom';
 function EntryPreview(props){
     const navigate = useNavigate();
     //<button type="button" className="btn btn-danger btn-lg" onClick={()=>navigate(`/entry`)}>{props.title}</button>
-    const titleEllipses = props.title.length > 40 ? "..." : ""
-    const previewTitle = props.title.substring(0,40) + titleEllipses;
+    const titleEllipses = props.title.length > 22 ? "..." : ""
+    const previewTitle = props.title.substring(0,22) + titleEllipses;
     const bodyEllipses = props.body.length > 100 ? "..." : ""
     const previewBody = props.body.substring(0,100) + bodyEllipses;
         // <div id = 'entryPreview' style={{border: "solid black"}}>

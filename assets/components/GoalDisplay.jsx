@@ -6,35 +6,43 @@ import { propTypes } from 'react-bootstrap/esm/Image.js';
 function GoalDisplay(props){
     const csrftoken = Cookies.get('csrftoken');
     let listItems = "";
-    const [goalList, setGoalList] = useState("Goals Loading...");
+    const [activeGoals, setActiveGoals] = useState("Goals Loading...");
     let goalTable = "";
-    console.log(props.month);
-    useEffect(()=>  {
-        async function getGoalItems(){
-            const activeGoals = await getActiveGoals();
-            if(activeGoals !== undefined){
-                if(props.displayLength === "week"){
-                    listItems = activeGoals.map((goal)=>{
-                        return (<tr key={goal.id}>
-                            <SingleGoalDisplay time_created={goal.time_created} id={goal.id} name={goal.name} days={goal.days} displayLength="week"/>
-                                </tr>);
-                    })
-                } else{
-                    listItems = activeGoals.map((goal)=>{
-                        return (<tr key={`${goal.id}_${props.month}_${props.year}`}>
-                            <SingleGoalDisplay time_created={goal.time_created} id={goal.id} name={goal.name} days={goal.days} displayLength="month" year={props.year} month={props.month}/>
-                                </tr>);
-                    });
-                }   
-                setGoalList(listItems);      
-            }
-        }
-        getGoalItems();
-        });
-    async function getActiveGoals(){
-        if (typeof goalList === 'object'){
+    //console.log("month" + props.month);
+    useEffect(()=>{
+        getActiveGoals();
+    })
+    function getGoalItems(){
+        if(activeGoals === "Goals Loading..."){
             return;
         }
+        let listItems = [];
+        if(props.displayLength === "week"){
+            listItems = activeGoals.map((goal)=>{
+                return (<tr key={goal.id}>
+                    <SingleGoalDisplay time_created={goal.time_created} id={goal.id} name={goal.name} days={goal.days} displayLength="week"/>
+                        </tr>);
+            })
+        } else{
+            listItems = activeGoals.map((goal)=>{
+                return (<tr key={`${goal.id}_${props.month}_${props.year}`}>
+                    <SingleGoalDisplay time_created={goal.time_created} id={goal.id} name={goal.name} days={goal.days} displayLength="month" year={props.year} month={props.month}/>
+                        </tr>);
+            });
+        }
+        return listItems;
+    }
+    function getActiveGoals(){
+        if (activeGoals !== "Goals Loading..."){
+            return;
+        }
+        const goals = fetchGoals();
+        goals.then((goals)=>{
+            const activeGoals = goals.filter((goal)=>!goal.archived);
+            setActiveGoals(activeGoals);
+        })
+    }
+    async function fetchGoals(){
         const response = await fetch(`/home/goals/`,{
             method: "GET",
             headers: {'X-CSRFToken': csrftoken,
@@ -43,9 +51,7 @@ function GoalDisplay(props){
             credentials: "include",
         });
         const goals = await response.json();
-        const activeGoals = goals.filter((goal)=>!goal.archived);
-        //console.log(activeGoals.constructor === Array);
-        return activeGoals;
+        return goals;
     }
     function getTableHeading(){
         const monthNames = ["January", "February", "March", "April", "May", "June",
@@ -74,12 +80,11 @@ function GoalDisplay(props){
     function getGoalTable(){
         const tableHeading = getTableHeading();
         const goalHistory = props.displayLength === "week" ? <Link to="/all-goals" className="btn btn-danger btn-lg" role="button">See Goal History</Link>: "";
-        if(goalList === "Goals Loading..."){
-            return "";
-        }
+        const tableKey = props.displayLength === "month" ? `${props.year}-${props.month}` : "";
+        const goalList = getGoalItems();
         return (
             <>
-            <table>
+            <table key={tableKey}>
             <thead>
             {tableHeading}           
             </thead>
@@ -100,6 +105,6 @@ function GoalDisplay(props){
     //     </tbody>
     //     </table>)));
 
-    return goalList === "Goals Loading" ? goalList: getGoalTable();
+    return activeGoals === "Goals Loading..." ? activeGoals: getGoalTable();
 }
 export default GoalDisplay;
