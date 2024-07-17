@@ -37,17 +37,18 @@ function AllEntries(){
     }
     function getEntriesOnPage(){
         const page = getPageNum();
-        return entries.slice((page - 1) * 10, page * 10);
+        return entries.slice((page - 1) * pagination_num, page * pagination_num);
     }
     function DisplayEntries(){
         const entries = getEntriesOnPage();
         if(Object.keys(entries).length === 0){
             return;
         }
-        const listItems = entries.map((entry) =>{
-            return <EntryPreview key={entry.id} title={entry.title} body={entry.body} id={entry.id} active={false} includeBody/>;
+        const listItems = entries.map((entry, index) =>{
+            if(index === 10) return <EntryPreview wrap key={entry.id} title={entry.title} body={entry.body} id={entry.id} active={false} time_created={entry.time_created} includeExtra/>;
+            return <EntryPreview key={entry.id} title={entry.title} body={entry.body} id={entry.id} active={false} time_created={entry.time_created} includeExtra/>;
         }); 
-        return <div className="btn-group-vertical btn-group-lg">{listItems}</div>
+        return <div className="d-flex justify-content-center"><div className="btn-group-vertical btn-group-lg ">{listItems}</div></div>
     }
     function getNumPages(){
         return Math.ceil(entries.length / 10);

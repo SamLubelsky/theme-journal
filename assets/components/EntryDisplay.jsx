@@ -3,17 +3,14 @@ import Cookies from 'js-cookie';
 import {takeRight} from 'lodash';
 import EntryPreview from "./EntryPreview.jsx";
 import {Link} from "react-router-dom";
-const num_entries = 15;
+const num_entries = 20;
 function EntryDisplay(props){
     const csrftoken = Cookies.get('csrftoken');
     const [entries, setEntries] = useState("Entries Loading...");
-    const [oldId, setOldId] = useState(-2);
     const id = props.id;
     useEffect(()=>{
         getEntries();
-        //console.log("getting");
     }, [props.title]);
-    //console.log(props.title);
     function getNearbyEntries(){
         const currentEntry = entries.filter((entry)=>id==entry.id)[0];
         let currentEntryTime;

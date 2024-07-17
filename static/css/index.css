@@ -168,7 +168,7 @@ body {
   max-width: 50rem;
 }
 .todoapp > form {
-  max-width: 100%;
+  max-width: 60rem;
 }
 .todoapp > h1 {
   display: block;
@@ -304,4 +304,10 @@ table{
 .pagination{
   position:absolute;
   bottom: 0;
+}
+.entry{
+  flex: 0.25 1 auto;
+}
+.wrap{
+  flex-basis:100%;
 }

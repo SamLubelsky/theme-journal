@@ -8,14 +8,18 @@ function EntryPreview(props){
     const previewTitle = props.title.substring(0,22) + titleEllipses;
     const bodyEllipses = props.body.length > 100 ? "..." : ""
     const previewBody = props.body.substring(0,100) + bodyEllipses;
+    const previewTime = new Date(props.time_created).toDateString();
         // <div id = 'entryPreview' style={{border: "solid black"}}>
         //     <Link to={`/entry/${props.id}`}>{props.title}</Link>
         //     <p>{`${bodyText} ${ellipses} `}</p>
-        // </div>
-    if(Object.hasOwn(props, "includeBody") && props.includeBody){
-        return (<>
-            <Link className="btn btn-primary btn-danger" to={`/entry/${props.id}`}> {previewTitle}             <p> {previewBody} </p></Link>
-            </>);
+        // </div>\
+        
+    if(props.includeExtra){
+        if(props.wrap){
+            console.log("wrapping " + props.id);
+            return <Link className="wrap btn btn-primary btn-danger" to={`/entry/${props.id}`}> {previewTitle}  <p> {previewBody} </p> <aside> {previewTime} </aside></Link>
+        } 
+        return <Link className="btn btn-primary btn-danger" to={`/entry/${props.id}`}> {previewTitle}  <p> {previewBody} </p> <aside> {previewTime} </aside></Link>
     }
     if(props.active === true){
          return <Link className="btn btn-primary active" to={`/entry/${props.id}`}> {previewTitle} </Link>

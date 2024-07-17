@@ -7,8 +7,6 @@ function GoalDisplay(props){
     const csrftoken = Cookies.get('csrftoken');
     let listItems = "";
     const [activeGoals, setActiveGoals] = useState("Goals Loading...");
-    let goalTable = "";
-    //console.log("month" + props.month);
     useEffect(()=>{
         getActiveGoals();
     })
@@ -95,16 +93,6 @@ function GoalDisplay(props){
             {goalHistory}
             </>);
     }
-
-    //console.log(goalList);
-    //console.log(typeof goalList);
-    // console.log(ReactDOMServer.renderToStaticMarkup((<table>
-    //     <tbody>
-    //     <tr><th>Goal</th><th>Sun</th><th>Mon</th><th>Tue</th><th>Wed</th><th>Thu</th><th>Fri</th><th>Sat</th></tr>
-    //     {goalList}
-    //     </tbody>
-    //     </table>)));
-
     return activeGoals === "Goals Loading..." ? activeGoals: getGoalTable();
 }
 export default GoalDisplay;

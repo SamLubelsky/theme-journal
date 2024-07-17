@@ -62,12 +62,12 @@ function Entry(props){
             <form>
             <div className ="form-group">
                 <label htmlFor="titleInput"> Title </label>
-                <input type="text" className ="form-control" id="titleInput" value= {title} placeholder="Enter title" onChange = {changeTitle}/>
+                <input type="text" className ="form-control form-control-lg" id="titleInput" value= {title} placeholder="Enter title" onChange = {changeTitle}/>
                 <small id="savingText" className ="form-text text-muted">{savingText}</small>
             </div>
             <div className ="form-group">
                 <label htmlFor="bodyInput"> Entry </label>
-                <textarea className ="form-control" id="bodyInput" value={body} placeholder="Your Entry here" rows="30" onChange = {changeBody}/>
+                <textarea className ="form-control form-control-lg" id="bodyInput" value={body} placeholder="Your Entry here" rows="30" onChange = {changeBody}/>
                 <small id="savingText" className ="form-text text-muted">All the text you enter here is automatically encrypted.</small>
             </div>
             </form>
