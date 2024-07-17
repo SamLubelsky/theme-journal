@@ -23,7 +23,7 @@ from django.conf import settings
 from django.conf.urls.static import static
 from django.contrib.auth.models import User
 from rest_framework import routers, serializers, viewsets
-
+from . import views
 
 class UserSerializer(serializers.HyperlinkedModelSerializer):
     class Meta:
@@ -42,9 +42,8 @@ urlpatterns = [
     path('admin/', admin.site.urls),
     path('api-auth/', include('rest_framework.urls', namespace='rest_framework')),
     path('', RedirectView.as_view(url='home/', permanent=True), name='index'),
-    path('users/', include(router.urls)),
-    path('home/', include('mainpage.urls')),
     path('accounts/', include('django.contrib.auth.urls')),
-    path('hello-webpack/', TemplateView.as_view(template_name='hello_webpack.html')),
-    re_path(r"^(?:.*)?$", RedirectView.as_view(url='/',permanent=True)),
+    path('accounts/create', views.UserCreate, name='create-account'),
+    path('home/', include('mainpage.urls')),
+    #re_path(r"^(?:.*)?$", RedirectView.as_view(url='/',permanent=True)),
 ] + static(settings.STATIC_URL, document_root=settings.STATIC_ROOT)

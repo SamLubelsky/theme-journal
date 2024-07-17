@@ -16,6 +16,7 @@ function MyNavbar(){
                     <Nav.Link as={Link} to="/goals">Goals</Nav.Link>
                     <Nav.Link as={Link} to="/theme">Your Theme</Nav.Link>
                     <Nav.Link as={Link} to="/settings">Settings</Nav.Link>
+                    <Nav.Link href="/accounts/logout/">Logout</Nav.Link>
                 </Nav>
             </Navbar.Collapse>
         </Container>

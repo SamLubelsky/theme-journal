@@ -44,15 +44,6 @@ class GoalViewSet(viewsets.ModelViewSet):
     def perform_create(self, serializer):
         serializer.save(owner=self.request.user)
 
-class GoalInstanceViewSet(viewsets.ModelViewSet):
-    serializer_class = GoalSerializer
-    permission_classes = [permissions.IsAuthenticated]
-    pagination_class = None
-    def get_queryset(self):
-        return Goal.objects.filter(owner__exact=self.request.user)
-    def perform_create(self, serializer):
-        serializer.save(owner=self.request.user)
-
 class ThemeViewSet(viewsets.ModelViewSet):
     serializer_class = ThemeSerializer
     permission_classes = [permissions.IsAuthenticated]

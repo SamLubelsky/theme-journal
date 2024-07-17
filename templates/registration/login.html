@@ -30,8 +30,11 @@
     <input type="submit" value="login">
     <input type="hidden" name="next" value="{{ next }}">
   </form>
-
   {# Assumes you set up the password_reset view in your URLconf #}
   <p><a href="{% url 'password_reset' %}">Lost password?</a></p>
+  <form method="get" action="{% url 'create-account' %}">
+    <p>Don't have an account? </p>
+    <input type="submit" value="Sign up here!">
+  </form>
 
 {% endblock %}

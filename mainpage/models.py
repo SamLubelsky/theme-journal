@@ -21,23 +21,6 @@ class Theme(models.Model):
     owner = models.OneToOneField(User, related_name='theme', on_delete=models.CASCADE)
     def __str__(self):
         return self.name
-    
-class GoalInstance(models.Model):
-    goal = models.ForeignKey(Goal, related_name='goal', on_delete=models.CASCADE)
-    time_created = models.DateField(default=timezone.now)
-
-    COMPLETED_STATUS = (
-     ('n','Not Completed'),
-     ('h','Half Completed'),
-     ('c','Completed'),
-    )
-    status = models.CharField(
-        max_length=1,
-        choices=COMPLETED_STATUS,
-        blank=True,
-        default='n',
-        help_text='Completion status of goal'
-    )
 
 class Entry(models.Model):
     title = models.CharField(max_length=200, null=True, blank=True)
