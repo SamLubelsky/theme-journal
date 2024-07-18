@@ -60,7 +60,6 @@ function Entry(props){
     }
     async function changeBody(e){
         if(mode === "Not Created"){
-            //console.log("creating new");
             const date = new Date();
             const newTitle = date.toDateString();
             createEntry(newTitle, e.target.value)

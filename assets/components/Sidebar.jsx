@@ -8,7 +8,6 @@ function Sidebar(props){
     return (
         <SideNav 
         onSelect={selected=>{
-            console.log(selected);
             navigate('/'+selected);
         }}
         >

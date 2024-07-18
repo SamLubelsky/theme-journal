@@ -30,7 +30,7 @@ SECRET_KEY = 'django-insecure-%itwo)&n6m0w#qe#oi1s(03tyfc5&g89q@pxho(hfg@-33o3h1
 # DEBUG = True
 DEBUG = os.environ.get('DJANGO_DEBUG', '') != 'False'
 
-ALLOWED_HOSTS = ['web-production-b761f.up.railway.app','127.0.0.1']
+ALLOWED_HOSTS = ['web-production-b761f.up.railway.app','127.0.0.1','localhost']
 
 
 # Application definition
@@ -159,4 +159,4 @@ STORAGES = {
     },
 }
 
-CSRF_TRUSTED_ORIGINS = ['https://web-production-b761f.up.railway.app']
+CSRF_TRUSTED_ORIGINS = ['https://web-production-b761f.up.railway.app','https://127.0.0.1']

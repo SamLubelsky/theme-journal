@@ -16,7 +16,6 @@ function EntryPreview(props){
         
     if(props.includeExtra){
         if(props.wrap){
-            console.log("wrapping " + props.id);
             return <Link className="wrap btn btn-primary btn-danger" to={`/entry/${props.id}`}> {previewTitle}  <p> {previewBody} </p> <aside> {previewTime} </aside></Link>
         } 
         return <Link className="btn btn-primary btn-danger" to={`/entry/${props.id}`}> {previewTitle}  <p> {previewBody} </p> <aside> {previewTime} </aside></Link>
