@@ -159,4 +159,4 @@ STORAGES = {
     },
 }
 
-CSRF_TRUSTED_ORIGINS = ['https://web-production-b761f.up.railway.app/']
+CSRF_TRUSTED_ORIGINS = ['https://web-production-b761f.up.railway.app']
