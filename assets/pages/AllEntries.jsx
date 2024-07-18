@@ -2,20 +2,21 @@ import React, {useEffect, useState} from "react";
 import { useParams, Link } from "react-router-dom";
 import Cookies from "js-cookie";
 import EntryPreview from "../components/EntryPreview.jsx";
+import { nanoid } from 'nanoid'
 function AllEntries(){
-    const [mode, setMode] = useState("Not Received");
-    const [entries, setEntries] = useState([]);
+    const [entries, setEntries] = useState("Entries Loading...");
     const params = useParams();
     const pagination_num = 10;
     const csrftoken = Cookies.get('csrftoken');
+    let key = -1;
     useEffect(()=>
         {
             getEntries();
-        });
-    async function getEntries(){
-        if(mode === "Received"){
-            return;
-        }
+        }, [key]);
+    function getEntries(){
+        fetchEntries().then(entries=>setEntries(entries))
+    }
+    async function fetchEntries(){
         const response = await fetch(`/home/entries/`,{
             method: "GET",
             headers: {'X-CSRFToken': csrftoken,
@@ -24,8 +25,6 @@ function AllEntries(){
             credentials: "include",
         });
         const entries = await response.json();
-        setEntries(entries);
-        setMode("Received");
         return entries;
     }
     function getPageNum(){
@@ -35,18 +34,29 @@ function AllEntries(){
             return 1;
         }
     }
+    function deleteEntry(id){
+        fetch(`/home/entries/${id}/`,{
+            method: "DELETE",
+            headers: {'X-CSRFToken': csrftoken,
+            'Content-Type':'application/json'
+            },
+            credentials: "include",
+        });
+        getEntries();
+        key = nanoid();
+    }
     function getEntriesOnPage(){
         const page = getPageNum();
         return entries.slice((page - 1) * pagination_num, page * pagination_num);
     }
     function DisplayEntries(){
-        const entries = getEntriesOnPage();
-        if(Object.keys(entries).length === 0){
-            return;
+        if(entries === "Entries Loading..."){
+            return entries;
         }
-        const listItems = entries.map((entry, index) =>{
-            if(index === 10) return <EntryPreview wrap key={entry.id} title={entry.title} body={entry.body} id={entry.id} active={false} time_created={entry.time_created} includeExtra/>;
-            return <EntryPreview key={entry.id} title={entry.title} body={entry.body} id={entry.id} active={false} time_created={entry.time_created} includeExtra/>;
+        console.log(entries);
+        const pageEntries = getEntriesOnPage();
+        const listItems = pageEntries.map((entry) =>{
+            return <EntryPreview deleteEntry={deleteEntry} key={entry.id} title={entry.title} body={entry.body} id={entry.id} active={false} time_created={entry.time_created} includeExtra/>;
         }); 
         return <div className="d-flex justify-content-center"><div className="btn-group-vertical btn-group-lg ">{listItems}</div></div>
     }
@@ -69,8 +79,9 @@ function AllEntries(){
         </nav>
         );
     }
-    return (<>
-    <DisplayEntries />
+    return (
+    <>
+    <DisplayEntries key={key}/>
     <PaginateNavbar />
     </>
     );

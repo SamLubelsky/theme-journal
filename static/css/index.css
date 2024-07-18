@@ -311,3 +311,19 @@ table{
 .wrap{
   flex-basis:100%;
 }
+/* .btn-delete{
+  background-image:url('/static/images/trash-solid.svg')
+} */
+.btn-delete{
+  flex-basis:0;
+  flex-grow:0;
+  max-width:30px;
+}
+.btn-entry{
+  flex-grow: 2;
+}
+.entry-flex{
+  gap:10px;
+  align-items:center;
+  width: 20rem;
+}

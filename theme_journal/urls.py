@@ -45,5 +45,5 @@ urlpatterns = [
     path('accounts/', include('django.contrib.auth.urls')),
     path('accounts/create', views.UserCreate, name='create-account'),
     path('home/', include('mainpage.urls')),
-    #re_path(r"^(?:.*)?$", RedirectView.as_view(url='/',permanent=True)),
+    re_path(r"^(?:.*)?$", RedirectView.as_view(url='/',permanent=True)),
 ] + static(settings.STATIC_URL, document_root=settings.STATIC_ROOT)

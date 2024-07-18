@@ -9,16 +9,15 @@ function EntryPreview(props){
     const bodyEllipses = props.body.length > 100 ? "..." : ""
     const previewBody = props.body.substring(0,100) + bodyEllipses;
     const previewTime = new Date(props.time_created).toDateString();
-        // <div id = 'entryPreview' style={{border: "solid black"}}>
-        //     <Link to={`/entry/${props.id}`}>{props.title}</Link>
-        //     <p>{`${bodyText} ${ellipses} `}</p>
-        // </div>\
-        
     if(props.includeExtra){
-        if(props.wrap){
-            return <Link className="wrap btn btn-primary btn-danger" to={`/entry/${props.id}`}> {previewTitle}  <p> {previewBody} </p> <aside> {previewTime} </aside></Link>
-        } 
-        return <Link className="btn btn-primary btn-danger" to={`/entry/${props.id}`}> {previewTitle}  <p> {previewBody} </p> <aside> {previewTime} </aside></Link>
+        return <div className="d-flex entry-flex">
+                <Link className="btn btn-danger btn-entry flex-fill flex-grow-1" to={`/entry/${props.id}`}> 
+                {previewTitle}  <p> {previewBody} </p> <aside> {previewTime} </aside>
+                </Link>
+                {/* <img src="/static/images/trash-solid.svg" /> */}
+                <input type="image" className="btn-delete" src="/static/images/trash-solid.svg" onClick={()=>props.deleteEntry(props.id)}/>
+                {/* <button id="delete-entry" className="btn btn-primary btn-delete" >Delete </button> */}
+                </div>
     }
     if(props.active === true){
          return <Link className="btn btn-primary active" to={`/entry/${props.id}`}> {previewTitle} </Link>

@@ -15,6 +15,7 @@ function NewEntry(props){
     const [seed, setSeed] = useState(1); //seed is used for creating a new-entry from /new-entry page
     const reset = () => {
         setSeed(Math.random());
+        setEntryId(-1);
     }
     function setNewId(id){
         setEntryId(id);
@@ -26,7 +27,7 @@ function NewEntry(props){
             </div>
             <div className="entry">
                 <div className="d-grid gap-2">
-                <button type="button" className="btn btn-danger btn-lg btn-primary" onClick={()=>navigate("/new-entry")}>Create New Entry</button>
+                <button type="button" className="btn btn-danger btn-lg btn-primary" onClick={()=>reset()}>Create New Entry</button>
                 </div>
                 <CreatableEntry key={seed} setNewId={setNewId} setTitle={setTitle}/>
             </div>
