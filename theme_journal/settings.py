@@ -30,7 +30,7 @@ SECRET_KEY = 'django-insecure-%itwo)&n6m0w#qe#oi1s(03tyfc5&g89q@pxho(hfg@-33o3h1
 # DEBUG = True
 DEBUG = os.environ.get('DJANGO_DEBUG', '') != 'False'
 
-ALLOWED_HOSTS = ['web-production-b761f.up.railway.app','127.0.0.1','localhost']
+ALLOWED_HOSTS = ['web-production-b761f.up.railway.app','127.0.0.1','localhost','themejournal.tech']
 
 
 # Application definition
