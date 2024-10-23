@@ -159,4 +159,4 @@ STORAGES = {
     },
 }
 
-CSRF_TRUSTED_ORIGINS = ['https://web-production-b761f.up.railway.app','https://127.0.0.1']
+CSRF_TRUSTED_ORIGINS = ['https://web-production-b761f.up.railway.app','https://127.0.0.1','https://themejournal.tech']
